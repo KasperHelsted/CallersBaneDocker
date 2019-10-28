@@ -1,0 +1,23 @@
+version: '3.4'
+services:
+  mariadb:
+    image: mariadb:10.2
+    environment:
+      MYSQL_ROOT_PASSWORD: changeme
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+    restart: on-failure
+
+  callersbane:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_HOST: mariadb
+      MYSQL_USER: test
+      MYSQL_PASS: test
+      MYSQL_DB: test
+    #restart: unless-stopped # Enabled auto restart, since the bot is gonna crash until redis has token
+    depends_on:
+      - mariadb
